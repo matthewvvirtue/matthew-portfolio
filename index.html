@@ -3,108 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Webpage Title (will show on tab) -->
-    <title>Professional Portfolio</title>
+    <title>Matthew's Portfolio - Full Stack Developer</title>
     <style>
-        /* Basic styling for the page */
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e0e0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #16213e 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(30, 90, 150, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(100, 30, 150, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Floating particles */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(100vh); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(100, 150, 200, 0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Style */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* About Section */
+        .about {
+            background: rgba(26, 31, 58, 0.5);
+            border-radius: 20px;
+            padding: 4rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .about p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(100, 150, 200, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .project-header {
+            height: 200px;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .project-content p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
             line-height: 1.6;
         }
-        header {
-            background: #333;
-            color: #fff;
-            padding: 1rem 0;
-            text-align: center;
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
-        nav {
-            margin: 1rem 0;
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #00d4ff;
         }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 1rem;
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
-        section {
+
+        .skill-category {
+            background: rgba(26, 31, 58, 0.6);
             padding: 2rem;
-            border-bottom: 1px solid #ddd;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 150, 200, 0.2);
+            transition: all 0.3s ease;
         }
+
+        .skill-category:hover {
+            border-color: #7c3aed;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+        }
+
+        .skill-category h3 {
+            font-size: 1.3rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 0.5rem 0;
+            color: #b0b0b0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .skill-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: rgba(26, 31, 58, 0.5);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .contact-link:hover {
+            background: #00d4ff;
+            color: #0a0e27;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
         footer {
             text-align: center;
-            padding: 1rem;
-            background: #333;
-            color: #fff;
+            padding: 2rem;
+            color: #666;
+            border-top: 1px solid rgba(100, 150, 200, 0.2);
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            nav {
+                padding: 1rem;
+            }
+
+            .hero {
+                margin-top: 70px;
+                min-height: 80vh;
+            }
+
+            .about {
+                padding: 2rem;
+            }
+
+            .contact {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <h1>Welcome to My Portfolio</h1>
-        <nav>
-            <a href="#about">About Me</a>
-            <a href="#projects">Projects</a>
-            <a href="#credentials">Credentials</a>
-            <a href="#contact">Contact Info</a>
-        </nav>
-    </header>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Matthew</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-    <!-- About Me Section -->
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Full Stack Developer</h1>
+            <p>Building beautiful and functional web experiences</p>
+            <a href="#projects" class="cta-button">View My Work</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
     <section id="about">
-        <h2>About Me</h2>
-        <p>
-            <!-- Add a brief introduction about yourself here -->
-            Hello! My name is Matthew Virtue. I am passionate about Computer Science and Buisness. 
-            Welcome to my portfolio website!
-        </p>
+        <h2 class="section-title">About Me</h2>
+        <div class="about">
+            <p>
+                I'm a passionate full-stack developer with a love for creating elegant solutions to complex problems. 
+                With expertise in modern web technologies, I build responsive and user-centric applications that make a real impact.
+            </p>
+            <p>
+                When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, 
+                or sharing knowledge with the community.
+            </p>
+        </div>
     </section>
 
     <!-- Projects Section -->
     <section id="projects">
-        <h2>Projects</h2>
-        <p>
-            <!-- Add a list or description of your projects here -->
-            Here are some of the projects I have worked on:
-        </p>
-        <ul>
-            <li>Project 1: [Brief description] <a href="[link to project repository]" target="_blank">[Project repository]</a></li>
-            <li>Project 2: [Brief description] <a href="[link to project repository]" target="_blank">[Project repository]</a></li>
-        </ul>
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-header">🚀</div>
+                <div class="project-content">
+                    <h3>Project Alpha</h3>
+                    <p>A modern web application built with React and Node.js featuring real-time data synchronization and responsive design.</p>
+                    <div class="project-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">💡</div>
+                <div class="project-content">
+                    <h3>Project Beta</h3>
+                    <p>An innovative dashboard application with advanced analytics and visualization tools for data-driven insights.</p>
+                    <div class="project-tags">
+                        <span class="tag">Vue.js</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">D3.js</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">⚡</div>
+                <div class="project-content">
+                    <h3>Project Gamma</h3>
+                    <p>A high-performance e-commerce platform with payment integration and optimized checkout flow.</p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Stripe</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Credentials Section -->
-    <section id="credentials">
-        <h2>Credentials</h2>
-        <p>
-            <!-- Add your credentials, certifications, or achievements here -->
-            I have earned the following certifications and achievements:
-        </p>
-        <ul>
-            <li>Certification 1: [Details]</li>
-            <li>Certification 2: [Details]</li>
-            <li>Certification 3: [Details]</li>
-            <!-- Add images of your certification digital badges -->
-        </ul>
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title">Skills & Expertise</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <h3>Frontend</h3>
+                <ul class="skill-list">
+                    <li>React / Vue.js</li>
+                    <li>HTML / CSS / JavaScript</li>
+                    <li>TypeScript</li>
+                    <li>Responsive Design</li>
+                    <li>Web Performance</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Backend</h3>
+                <ul class="skill-list">
+                    <li>Node.js / Express</li>
+                    <li>Python / Django</li>
+                    <li>RESTful APIs</li>
+                    <li>Database Design</li>
+                    <li>Authentication</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3>Tools & Technologies</h3>
+                <ul class="skill-list">
+                    <li>Git / GitHub</li>
+                    <li>Docker</li>
+                    <li>CI/CD Pipelines</li>
+                    <li>AWS / Cloud</li>
+                    <li>Testing & Debugging</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-    <!-- Contact Info Section -->
+    <!-- Contact Section -->
     <section id="contact">
-        <h2>Contact Info</h2>
-        <p>
-            <!-- Add your contact information here -->
-            Feel free to reach out to me:
-        </p>
-        <ul>
-            <li>Email: [your-email@example.com]</li>
-            <li>LinkedIn: <a href="[your-linkedin-profile]" target="_blank">[Your LinkedIn]</a></li>
-        </ul>
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact">
+            <p>I'm always interested in hearing about new projects and opportunities.</p>
+            <div class="contact-links">
+                <a href="mailto:matthew@example.com" class="contact-link">Email Me</a>
+                <a href="https://github.com" class="contact-link" target="_blank">GitHub</a>
+                <a href="https://linkedin.com" class="contact-link" target="_blank">LinkedIn</a>
+                <a href="https://twitter.com" class="contact-link" target="_blank">Twitter</a>
+            </div>
+        </div>
     </section>
 
-    <!-- Footer Section -->
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 [Your Name]. All rights reserved.</p>
+        <p>&copy; 2024 Matthew's Portfolio. All rights reserved.</p>
     </footer>
 </body>
 </html>
